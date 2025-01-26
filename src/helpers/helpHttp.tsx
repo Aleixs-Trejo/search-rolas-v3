@@ -1,7 +1,11 @@
+type ErrorResponse = {
+  err: boolean;
+  status: number | string;
+  statusText: string;
+};
+
 const helpHttp = () => {
-
-  const customFetch = async <T>(url: string, options: RequestInit): Promise<T> => {
-
+  const customFetch = async <T>(url: string, options: RequestInit): Promise<T | ErrorResponse> => {
     const defaultHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -13,8 +17,11 @@ const helpHttp = () => {
       ? { ...defaultHeaders, ...options.headers }
       : defaultHeaders;
 
-    if (!options.body) delete options.body;
-    else options.body = JSON.stringify(options.body);
+    if (options.body) {
+      options.body = JSON.stringify(options.body);
+    } else {
+      delete options.body;
+    }
 
     setTimeout(() => controller.abort(), 5000); // 5sec
 
@@ -30,23 +37,28 @@ const helpHttp = () => {
         });
       }
     } catch (err) {
-      return err
+      return {
+        err: true,
+        status: "00",
+        statusText: err instanceof Error ? err.message : "Ocurrió un error inesperado",
+      };
     }
   };
 
-  const get = <T>(url: string, options: RequestInit = {}): Promise<T> => customFetch(url, options);
+  const get = <T>(url: string, options: RequestInit = {}): Promise<T | ErrorResponse> =>
+    customFetch(url, options);
 
-  const post = <T>(url: string, options: RequestInit = {}): Promise<T> => {
+  const post = <T>(url: string, options: RequestInit = {}): Promise<T | ErrorResponse> => {
     options.method = "POST";
     return customFetch(url, options);
   };
 
-  const put = <T>(url: string, options: RequestInit = {}): Promise<T> => {
+  const put = <T>(url: string, options: RequestInit = {}): Promise<T | ErrorResponse> => {
     options.method = "PUT";
     return customFetch(url, options);
   };
 
-  const del = <T>(url: string, options: RequestInit = {}): Promise<T> => {
+  const del = <T>(url: string, options: RequestInit = {}): Promise<T | ErrorResponse> => {
     options.method = "DELETE";
     return customFetch(url, options);
   };
@@ -55,8 +67,8 @@ const helpHttp = () => {
     get,
     post,
     put,
-    del
+    del,
   };
 };
 
-export {helpHttp};
+export { helpHttp };
