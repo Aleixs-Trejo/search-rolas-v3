@@ -41,10 +41,12 @@ const trackEmpty: Track = {
       title: "",
       mbid: "",
       url: "",
-      image: {
-        "#text": "",
-        size: "",
-      },
+      image: [
+        {
+          "#text": "",
+          size: "",
+        }
+      ],
       "@attr": {
         position: "",
       },
