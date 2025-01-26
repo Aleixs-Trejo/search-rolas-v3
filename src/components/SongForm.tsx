@@ -5,7 +5,7 @@ import "../css/SongForm.css";
 import iconSearch from "../assets/icon-search-white.svg";
 
 // Hooks
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface SongFormProps {
   handleSearch: (searchTerm: string) => void;

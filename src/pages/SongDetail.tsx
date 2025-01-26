@@ -101,7 +101,6 @@ const SongDetail: React.FC = () => {
 
   const handleAudio = () => {
     if (!audioRef.current) return;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isPlaying ? audioRef.current.pause() : audioRef.current.play();
     setIsPlaying(!isPlaying);
   };
@@ -119,8 +118,12 @@ const SongDetail: React.FC = () => {
     const fetchData = async () => {
       const searchMusic = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=359068a0c00cee1077c6b8250442f33a&artist=${encodeURIComponent(nameArtist)}&track=${encodeURIComponent(nameSong)}&format=json`;
       try {
-        const musicData = await helpHttp().get(searchMusic);
-        setMusic(musicData);
+        const musicData = await helpHttp().get<Track>(searchMusic);
+        if ("err" in musicData) {
+          console.error(musicData.statusText);
+        } else {
+          setMusic(musicData);
+        }
       } catch (error) {
         console.error(error);
       }

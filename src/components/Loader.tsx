@@ -1,7 +1,10 @@
 // CSS
 import "../css/Loader.css";
 
-const loader = () => {
+// React
+import React from "react";
+
+const loader: React.FC = () => {
   return (
     <div className="lds-ring">
       <div></div>

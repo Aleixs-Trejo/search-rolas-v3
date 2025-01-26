@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 interface SongListProps {
   search: string
   songs: Rolitas
-  selectSong: (song: Datum) => void;
   resetSearch: () => void;
 }
 
@@ -20,7 +19,7 @@ import SongLink from "./SongLink";
 // Helpers
 import { formatSeconds } from "../helpers/helpNumber";
 
-const SongList: React.FC<SongListProps> = ({ search, songs, selectSong, resetSearch }) => {
+const SongList: React.FC<SongListProps> = ({ search, songs, resetSearch }) => {
   const navigate = useNavigate();
 
   if (!songs) return null;
@@ -28,13 +27,16 @@ const SongList: React.FC<SongListProps> = ({ search, songs, selectSong, resetSea
   const { data, total } = songs;
 
   const handleSelectSong = (song: Datum) => {
-    selectSong(song);
+    // Limpiar la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.delete("q");
+    window.history.replaceState(null, "", window.location.pathname + window.location.hash);
     navigate(`/details/${song.id}`, { state: { song, search } });
   };
 
   return (
     <section className="container songs__list__container">
-      <h2 className="songs__list__title">Resultados de la búsqueda '{search}' - {total} rolitas encontradas UwU</h2>
+      <h2 className="songs__list__title">Resultados de la búsqueda &apos;{search}&apos; - {total} rolitas encontradas UwU</h2>
       <div className="songs__list__content">
         <button className="form__button btn__reset" onClick={() => resetSearch()}>Limpiar búsqueda</button>
         <ul className="songs__ul">

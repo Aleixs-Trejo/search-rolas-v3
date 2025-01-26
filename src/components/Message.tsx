@@ -1,9 +1,13 @@
 // CSS
 import "../css/Message.css";
 
+// React
+import React from "react";
+
 // Assets
 import icon from "../assets/icon-error-white.svg";
 
+// Types
 type ColorHex = `#${string}`;
 
 interface MessageProps {
