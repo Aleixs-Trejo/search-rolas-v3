@@ -1,0 +1,12 @@
+.app__container{
+  display: flex;
+  flex-direction: column;
+  padding-block: 1.5rem;
+  overflow: hidden;
+}
+
+.app__title{
+  font-size: clamp(1rem, 3vw + 0.75rem, 3.5rem);
+  text-align: center;
+  padding-bottom: 1rem;
+}

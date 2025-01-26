@@ -1,0 +1,47 @@
+.section__form{
+  width: 90%;
+  max-width: 20rem;
+  margin-inline: auto;
+}
+
+.form{
+  border-radius: 1rem;
+}
+
+.form__content{
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputs__container{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form__inputs{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+
+.form__input{
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  border: thin solid #fff;
+  color: #fff;
+  font-size: 1rem;
+  height: 100%;
+  width: 100%;
+}
+
+.form__button{
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: thin solid #ccc;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  overflow: hidden;
+}

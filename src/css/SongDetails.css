@@ -1,0 +1,294 @@
+.section__details__song{
+  display: flex;
+  flex-direction: column;
+  padding-block: 2rem;
+
+  --bg-color: #1e1e2e;
+  --height-header: 8rem;
+  --height-album: 6rem;
+
+  & > *{
+    padding-block: 1rem;
+  }
+}
+
+.btn__back {
+  align-self: flex-start;
+  margin-left: 1rem;
+}
+
+.song__header{
+  width: 100%;
+  background-color: var(--bg-color);
+  height: var(--height-header);
+}
+
+.song__header__container{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.song__header__content{
+  height: 100%;
+  position: relative;
+}
+
+.song__header__img{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.song__bg--color{
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: linear-gradient(to right, var(--bg-color) 50%, transparent),
+                    linear-gradient(to top, var(--bg-color) 0%, transparent);
+}
+
+.song__data{
+  position: relative;
+  height: 100%;
+  padding-block: 1rem;
+  z-index: 2;
+}
+
+.song__data__texts{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.song__data__artist{
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff8;
+}
+
+.song__data__title{
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.song__link{
+  color: #46cb41;
+  font-weight: 600;
+}
+
+.song__listeners__details{
+  padding-block: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  & > *{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+.song__listeners__text{
+  font-size: 0.75rem;
+}
+
+.song__listeners__number{
+  font-weight: 600;
+  color: #fff;
+}
+
+.song__info__detail{
+  color: #fff;
+  padding-block: 1rem;
+  border-top: thin solid #ccc8;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+
+  &:last-child{
+    border-bottom: thin solid #ccc8;
+  }
+}
+
+.song__info__detail__text{
+  color: inherit;
+  font-weight: 600;
+}
+
+.song__info__detail__number{
+  font-size: 0.75rem;
+}
+
+.song__lyric{
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  &:has(.show__lyric) .arrow__icon{
+    transform: rotate(90deg);
+  }
+}
+
+.song__lyrics__container{
+  display: flex;
+  flex-direction: column;
+}
+
+.song__lyric__container{
+  height: 2.5rem;
+  overflow: hidden;
+  transition: height 0.5s ease;
+  interpolate-size: allow-keywords;
+}
+
+.song__lyric__button{
+  color: #46cb41;
+  width: 2rem;
+  height: 2rem;
+  margin-left: auto;
+  aspect-ratio: 1/1;
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.song__lyric__container.show__lyric{
+  height: auto;
+}
+
+.arrow__icon{
+  transition: transform 0.3s ease;
+}
+
+.song__lyrics__title{
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.song__info__detail__lyric{
+  line-height: 1.5;
+  white-space: pre-wrap; /* Mantiene el texto tal cual viene de la API */
+  font-size: 0.8rem;
+}
+
+.song__extra__info{
+  padding-block: 1rem;
+  border-bottom: thin solid #ccc8;
+  & p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+}
+
+.song__extra__tags{
+  padding-block: 1rem;
+}
+
+.song__extra__tags__list,
+.song__artist__tags__list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.song__extra__tags__item,
+.song__artist__tags__item{
+  border: thin solid #888;
+  border-radius: 0.3rem;
+  overflow: hidden;
+}
+
+.tag__link{
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.song__extra__album{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.song__extra__title{
+  font-weight: 400;
+  font-size: 1.25rem;
+}
+
+.song__extra__album__container{
+  height: var(--height-album);
+  overflow: hidden;
+  border-radius: 0.4rem;
+  box-shadow: 1px 1px 8px -5px #fff8;
+}
+
+.song__audio__photo{
+  display: flex;
+}
+
+.song__extra__album__figure{
+  position: relative;
+  width: var(--height-album);
+  height: 100%;
+}
+
+.play__song{
+  position: absolute;
+  inset: 0;
+}
+
+.icon__play,
+.icon__pause{
+  width: 70%;
+  height: 70%;
+  aspect-ratio: 1/1;
+  fill: #fff8;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.song__extra__album__content{
+  padding: 0.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.song__extra__album__texts{
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.song__extra__album__text:first-child{
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.song__extra__album__text:last-child{
+  font-size: 0.7rem;
+  color: #ccc8;
+}
+
+.song__audio__container{
+  position: relative;
+  width: max-content;
+  height: max-content;
+
+  &::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 3rem;
+    user-select: none;
+  }
+}

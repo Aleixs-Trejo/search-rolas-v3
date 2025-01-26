@@ -1,0 +1,9 @@
+.song__search__container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    padding-block: 1.25rem;
+  }
+}
