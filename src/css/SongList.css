@@ -36,7 +36,7 @@
   border: thin solid var(--text-color-primary);
   
   &:hover{
-    transform: scale(1.05);
+    transform: scale(1.015);
     box-shadow: 1px 1px 16px -8px #fff8;
   }
 }

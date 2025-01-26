@@ -8,12 +8,15 @@ import { useLocation } from "react-router-dom";
 // Types
 import { Datum } from "../types/RolitasType";
 import { Track } from "../types/TrackType";
+import { Lyrics } from "../types/LyricsType";
+import { ArtistBio } from "../types/ArtistBio";
 
 // Components
 import Message from "../components/Message";
 
 // Assets
 import errorImg from "../assets/img-error.webp";
+import arrow from "../assets/icon-arrow-white.svg";
 
 // Helpers
 import { formatSeconds, formatNumber } from "../helpers/helpNumber";
@@ -62,9 +65,70 @@ const trackEmpty: Track = {
   }
 };
 
+const lyricsEmpty: Lyrics = {
+  lyrics: "",
+};
+
+const artistBioEmpty: ArtistBio = {
+  artist: {
+    name: "",
+    mbid: "",
+    url: "",
+    image: [
+      {
+        "#text": "",
+        size: "",
+      }
+    ],
+    streamable: "",
+    ontour: "",
+    stats: {
+      listeners: "",
+      playcount: "",
+    },
+    similar: {
+      artist: [
+        {
+          name: "",
+          url: "",
+          image: [
+            {
+              "#text": "",
+              size: "",
+            }
+          ],
+        }
+      ],
+    },
+    tags: {
+      tag: [
+        {
+          name: "",
+          url: "",
+        },
+      ],
+    },
+    bio: {
+      links: {
+        link: {
+          "#text": "",
+          rel: "",
+          href: "",
+        }
+      },
+      published: "",
+      summary: "",
+      content: "",
+    },
+  },
+};
+
 const SongDetail: React.FC = () => {
   const [music, setMusic] = useState<Track>(trackEmpty);
+  const [lyric, setLyric] = useState<Lyrics>(lyricsEmpty);
+  const [showLyric, setShowLyric] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [artistBio, setArtistBio] = useState<ArtistBio>(artistBioEmpty);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const { state } = useLocation();
@@ -119,13 +183,23 @@ const SongDetail: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const searchMusic = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=359068a0c00cee1077c6b8250442f33a&artist=${encodeURIComponent(nameArtist)}&track=${encodeURIComponent(nameSong)}&format=json`;
+      const searchlyrics = `https://api.lyrics.ovh/v1/${encodeURIComponent(nameArtist)}/${encodeURIComponent(nameSong)}`;
+      const searchArtistBio = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(nameArtist)}&api_key=359068a0c00cee1077c6b8250442f33a&format=json`;
       try {
-        const musicData = await helpHttp().get<Track>(searchMusic);
-        if ("err" in musicData) {
-          console.error(musicData.statusText);
-        } else {
-          setMusic(musicData);
-        }
+        // ir al top de la página
+        window.scrollTo(0, 0);
+        const [musicData, lyricData, artistBioData] = await Promise.all([
+          helpHttp().get<Track>(searchMusic),
+          helpHttp().get<Lyrics>(searchlyrics),
+          helpHttp().get<ArtistBio>(searchArtistBio)
+        ]);
+
+        "err" in musicData ? console.error(musicData.statusText) : setMusic(musicData);
+
+        "err" in lyricData ? console.error(lyricData.statusText) : setLyric(lyricData);
+
+        "err" in artistBioData ? console.error(artistBioData.statusText) : setArtistBio(artistBioData);
+
       } catch (error) {
         console.error(error);
       }
@@ -138,7 +212,7 @@ const SongDetail: React.FC = () => {
   return(
     <section className="section__details__song">
       <button className="form__button btn__back" onClick={handleBack}>Volver</button>
-      <div className="details__song__container">
+      <section className="details__song__container">
         <div className="song__header">
           <div className="song__header__container">
             <article className="song__header__content">
@@ -175,7 +249,7 @@ const SongDetail: React.FC = () => {
                     </div>
                   )
                 }
-                {/* {
+                {
                   lyric.lyrics
                   ? (
                     <div className="song__info__detail song__lyric">
@@ -189,8 +263,7 @@ const SongDetail: React.FC = () => {
                     </div>
                   )
                   : (<Message text={`No se encontró letra para la canción`} />)
-                } */}
-                <Message text={`No se encontró letra para la canción`} />
+                }
               </div>
             </section>
             <section className="song__extra__details">
@@ -295,7 +368,58 @@ const SongDetail: React.FC = () => {
             </section>
           </article>
         </div>
-      </div>
+      </section>
+      <section className="container song__artist__section">
+        <h4 className="song__artist__title">Acerca del artista</h4>
+        <article className="song__artist__container">
+          {/* aquí irían las imágenes */}
+          <div className="song__artist__photos">
+            <article className="artist__bio__container">
+              <div className="artist__bg" style={{"--bg-img": `url(${artist.picture_medium})`, "--bg-img-xl": `url(${artist.picture_xl})`} as React.CSSProperties}>
+                <div className="artist__text__container">
+                  <div className="artist__text">
+                    <div className="artist__text__header">
+                      <h2 className="artist__name">{artist.name}</h2>
+                      <span className="artist__listeners">{formatNumber(music.track.listeners)} oyentes</span>
+                    </div>
+                    <div className="artist__text__bio">
+                      <div className="artist__text__bio__content">
+                        <p className="artist__bio__text" dangerouslySetInnerHTML={{ __html: artistBio.artist.bio.summary }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div className="song__artist__about">
+            <div className="artist__tags">
+              <ul className="song__artist__tags__list">
+                {
+                  artistBio.artist.tags.tag.map((tag, index) => (
+                    <li key={index} className="song__artist__tags__item">
+                      <a className="tag__link" href={tag.url}>{tag.name}</a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div className="song__artist__more">
+              <p className="song__artist__bio__profile">
+                <a className="song__link" href={artistBio.artist.bio.links.link.href} target="_blank" rel="noreferrer">Perfil del artista</a>
+              </p>
+              <p className="song__artist__bio__wiki">
+                <a
+                  className="song__link"
+                  href={`https://es.wikipedia.org/w/index.php?search=${artist.name}+music`} target="_blank" rel="noreferrer"
+                >
+                  Wiki del artista
+                </a>
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
     </section>
   );
 };

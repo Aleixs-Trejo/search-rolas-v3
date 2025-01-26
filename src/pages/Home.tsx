@@ -53,7 +53,7 @@ const SongSearch: React.FC = () => {
           'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com'
         }
       };
-      
+
       const searchData = `https://deezerdevs-deezer.p.rapidapi.com/search?q=${encodeURIComponent(search)}`;
 
       setIsLoading(true);
