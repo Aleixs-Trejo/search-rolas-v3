@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 // Components
 import Loader from "../components/Loader";
 import SongForm from "../components/SongForm";
+import Message from "../components/Message";
 
 // Helpers
 import { helpHttp } from "../helpers/helpHttp";
@@ -98,12 +99,15 @@ const SongSearch: React.FC = () => {
       <div className="song__search__container">
         <SongForm handleSearch={handeSearch} />
         {isLoading && <Loader />}
-        {search && !isLoading && (
+        {search && !isLoading && songs.data.length > 0 && (
           <SongList
             search={search}
             songs={songs}
             resetSearch={resetSearch}
           />
+        )}
+        {search && !isLoading && songs.data.length === 0 && (
+          <Message text="No se encontraron resultados" />
         )}
       </div>
     </section>
