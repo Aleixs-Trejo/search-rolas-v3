@@ -107,7 +107,7 @@ const SongSearch: React.FC = () => {
           />
         )}
         {search && !isLoading && songs.data.length === 0 && (
-          <Message text="No se encontraron resultados" />
+          <Message text="No se encontraron resultados, ¿Qué estás buscando, baboso?" />
         )}
       </div>
     </section>
