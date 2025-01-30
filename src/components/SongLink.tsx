@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 // Types
+import { Datum } from "../types/RolitasType";
 interface SongLinkProps {
+  song: Datum
   url: string
   bgSong: string
   duration: string
@@ -11,6 +13,7 @@ interface SongLinkProps {
   bgArtist: string
   nameArtist: string
   nameAlbum: string
+  favorites: boolean
 }
 
 // Assets

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 // CSS
 import "../css/SongDetails.css";
 
@@ -135,7 +136,8 @@ const SongDetail: React.FC = () => {
 
   const handleBack = () => {
     const searchParam = state?.search || "";
-    const baseUrl = window.location.origin;
+    const baseUrl = `${window.location.origin}/search-rolas-v3`;
+    console.log("baseUrl", baseUrl);
     const newUrl = `${baseUrl}/?q=${encodeURIComponent(searchParam)}`;
     window.location.href = newUrl;
   };
@@ -380,7 +382,7 @@ const SongDetail: React.FC = () => {
                   <div className="artist__text">
                     <div className="artist__text__header">
                       <h2 className="artist__name">{artist.name}</h2>
-                      <span className="artist__listeners">{formatNumber(music.track.listeners)} oyentes</span>
+                      <span className="artist__listeners">{formatNumber(music.track?.listeners)} oyentes</span>
                     </div>
                     <div className="artist__text__bio">
                       <div className="artist__text__bio__content">

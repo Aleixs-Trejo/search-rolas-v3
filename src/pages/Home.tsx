@@ -14,10 +14,25 @@ import { helpHttp } from "../helpers/helpHttp";
 
 // Types
 import {
+  Datum,
   type Rolitas as RolitasType,
 } from "../types/RolitasType.d";
 
+// Components
 import SongList from "../components/SongList";
+
+// LocalStorage
+// let mySongsInit: Datum[] = JSON.parse(localStorage.getItem("mySongs") || "[]");
+
+const mySongsInit: Datum[] = (() => {
+  try {
+    const storedData = JSON.parse(localStorage.getItem("mySongs") || "[]");
+    return Array.isArray(storedData) ? storedData : [];
+  } catch (error) {
+    console.error("Error al leer datos de localStorage", error);
+    return [];
+  }
+})();
 
 const SongSearch: React.FC = () => {
 
@@ -30,6 +45,7 @@ const SongSearch: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [songs, setSongs] = useState<RolitasType>(searchDataType);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [mySongs, setMySongs] = useState<Datum[]>(mySongsInit);
 
   useEffect(() => {
     // Manejo de la URL
@@ -74,7 +90,7 @@ const SongSearch: React.FC = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchData();
   }, [search]);
   
@@ -104,6 +120,8 @@ const SongSearch: React.FC = () => {
             search={search}
             songs={songs}
             resetSearch={resetSearch}
+            mySongs={mySongs}
+            setMySongs={setMySongs}
           />
         )}
         {search && !isLoading && songs.data.length === 0 && (

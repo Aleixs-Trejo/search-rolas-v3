@@ -29,6 +29,7 @@
 }
 
 .song__li{
+  position: relative;
   border-radius: 0.4rem;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -44,6 +45,7 @@
 .song__li__container {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .song__li__figure {
@@ -78,7 +80,7 @@
 }
 
 .song__li__title{
-  font-size: clamp(1.25rem, 4vw, 2rem);
+  font-size: clamp(1rem, 4vw, 1.5rem);
   line-height: 1;
   font-weight: 600;
   color: var(--text-color-primary);
@@ -87,15 +89,19 @@
 .song__li__artist{
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .artist__figure{
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
   overflow: hidden;
+}
+
+.song__li__artist__name{
+  font-size: 0.75rem;
 }
 
 .artist__icon{
@@ -104,12 +110,26 @@
   aspect-ratio: 1/1;
 }
 
-.song__span{
+.song__li__album{
   line-height: 1;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
 }
 
-@media screen and (width >= 425px) {
+.btn__favorites{
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  aspect-ratio: 1/1;
+  z-index: 5;
+  & svg{
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media screen and (width >= 20rem) {
   .song__li__container {
     flex-direction: row;
   }
