@@ -6,12 +6,16 @@ import iconSearch from "../assets/icon-search-white.svg";
 
 // Hooks
 import React, { useState } from "react";
+import { Datum } from "../types/RolitasType";
 
 interface SongFormProps {
   handleSearch: (searchTerm: string) => void;
+  mySongs: Datum[];
+  showFavorites: boolean;
+  setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SongForm: React.FC<SongFormProps> = ({ handleSearch }) => {
+const SongForm: React.FC<SongFormProps> = ({ handleSearch, mySongs, showFavorites, setShowFavorites }) => {
   const [search, setSearch] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +53,7 @@ const SongForm: React.FC<SongFormProps> = ({ handleSearch }) => {
                   autoComplete="off"
                 />
               </div>
-              <button className="flex-c-c form__button">
+              <button className="flex-c-c form__button" type="submit">
                 <figure className="flex-c-c button__figure">
                   <img
                     className="button__img"
@@ -59,6 +63,14 @@ const SongForm: React.FC<SongFormProps> = ({ handleSearch }) => {
                 </figure>
               </button>
             </div>
+            <button
+              type="button"
+              className="form__button btn__show__favorites"
+              onClick={() => setShowFavorites(!showFavorites)}
+              disabled={!mySongs.length}
+            >
+              {showFavorites ? "Ocultar Favoritos" : "Ver Favoritos"}
+            </button>
           </div>
         </form>
       </div>

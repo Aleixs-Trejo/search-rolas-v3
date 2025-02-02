@@ -1,3 +1,6 @@
+// React
+import React from "react";
+
 // CSS
 import './App.css';
 
@@ -8,7 +11,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import Home from "./pages/Home";
 import SongDetail from "./pages/SongDetail";
 
-function App() {
+const App: React.FC = () => {
   return (
     <HashRouter>
       <Routes>

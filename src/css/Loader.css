@@ -1,3 +1,12 @@
+.loader__container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
 .lds-ring {
   color: #28a4a0;
   margin-inline: auto;

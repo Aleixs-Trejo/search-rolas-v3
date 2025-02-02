@@ -20,6 +20,7 @@ import {
 
 // Components
 import SongList from "../components/SongList";
+import FavoritesSongs from "../components/FavoritesSongs";
 
 // LocalStorage
 // let mySongsInit: Datum[] = JSON.parse(localStorage.getItem("mySongs") || "[]");
@@ -46,6 +47,7 @@ const SongSearch: React.FC = () => {
   const [songs, setSongs] = useState<RolitasType>(searchDataType);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [mySongs, setMySongs] = useState<Datum[]>(mySongsInit);
+  const [showFavorites, setShowFavorites] = useState<boolean>(false);
 
   useEffect(() => {
     // Manejo de la URL
@@ -109,12 +111,18 @@ const SongSearch: React.FC = () => {
     window.history.replaceState(null, "", window.location.pathname + window.location.hash);
   }
 
+  if (isLoading) return <Loader />;
+
   return (
     <section className="app__container">
       <h1 className="app__title">Buscador de rolitas</h1>
       <div className="song__search__container">
-        <SongForm handleSearch={handeSearch} />
-        {isLoading && <Loader />}
+        <SongForm
+          handleSearch={handeSearch}
+          mySongs={mySongs}
+          showFavorites={showFavorites}
+          setShowFavorites={setShowFavorites}
+        />
         {search && !isLoading && songs.data.length > 0 && (
           <SongList
             search={search}
@@ -127,6 +135,11 @@ const SongSearch: React.FC = () => {
         {search && !isLoading && songs.data.length === 0 && (
           <Message text="No se encontraron resultados, ¿Qué estás buscando, baboso?" />
         )}
+        {
+          !search && !isLoading && showFavorites && mySongs.length > 0 && (
+            <FavoritesSongs mySongs={mySongs} />
+          )
+        }
       </div>
     </section>
   );

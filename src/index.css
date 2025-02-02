@@ -1,6 +1,7 @@
 /*********** ROOT ***********/
 :root{
   --bg-color: #11111b;
+  --bg-color-hover: #1e1e2e;
   --text-color-primary: #f1f1f1;
   --text-color-secondary: #aaa;
 }
@@ -25,6 +26,7 @@ body{
   position: relative;
   margin: 0;
   width: 100%;
+  min-height: 100dvh;
   overflow-x: hidden;
   background-color: var(--bg-color);
 }
@@ -32,13 +34,28 @@ body{
 button,
 input{
   background-color: transparent;
-  border: none;
+  border: thin solid var(--text-color-secondary);
+  border-radius: 0.4rem;
+  padding: 0.5rem;
   outline: none;
   cursor: pointer;
   font-family: inherit;
-  transition: 300ms ease;
+  transition: all 300ms ease;
   display: block;
   color: var(--text-color-secondary);
+}
+
+button:hover {
+  background-color: var(--bg-color-hover);
+}
+
+button:disabled{
+  cursor: not-allowed;
+  opacity: 0.5;
+
+  &:hover {
+    background-color: unset;
+  }
 }
 
 a{
@@ -98,6 +115,7 @@ input[type="number"]::-webkit-outer-spin-button{
 .container{
   width: 95%;
   max-width: 64rem;
+  max-width: 75rem;
   margin-inline: auto;
   overflow: hidden;
 }

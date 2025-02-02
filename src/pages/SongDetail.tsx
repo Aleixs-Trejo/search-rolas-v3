@@ -14,6 +14,7 @@ import { ArtistBio } from "../types/ArtistBio";
 
 // Components
 import Message from "../components/Message";
+import Loader from "../components/Loader";
 
 // Assets
 import errorImg from "../assets/img-error.webp";
@@ -125,6 +126,7 @@ const artistBioEmpty: ArtistBio = {
 };
 
 const SongDetail: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [music, setMusic] = useState<Track>(trackEmpty);
   const [lyric, setLyric] = useState<Lyrics>(lyricsEmpty);
   const [showLyric, setShowLyric] = useState<boolean>(false);
@@ -183,6 +185,7 @@ const SongDetail: React.FC = () => {
   const nameArtist = artist.name;
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       const searchMusic = `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=359068a0c00cee1077c6b8250442f33a&artist=${encodeURIComponent(nameArtist)}&track=${encodeURIComponent(nameSong)}&format=json`;
       const searchlyrics = `https://api.lyrics.ovh/v1/${encodeURIComponent(nameArtist)}/${encodeURIComponent(nameSong)}`;
@@ -202,18 +205,23 @@ const SongDetail: React.FC = () => {
 
         "err" in artistBioData ? console.error(artistBioData.statusText) : setArtistBio(artistBioData);
 
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     };
     fetchData();
   }, [nameSong, nameArtist]);
+
+  if (loading) return <Loader />;
 
   if (!song) return <Message text="No se encontró la canción" />;
 
   return(
     <section className="section__details__song">
       <button className="form__button btn__back" onClick={handleBack}>Volver</button>
+      {loading && <Loader />}
       <section className="details__song__container">
         <div className="song__header">
           <div className="song__header__container">

@@ -150,6 +150,8 @@
 }
 
 .song__lyric__button{
+  border: none;
+  padding: 0;
   color: #46cb41;
   width: 2rem;
   height: 2rem;

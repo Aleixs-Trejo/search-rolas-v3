@@ -1,6 +1,3 @@
-// CSS
-import "../css/SongList.css";
-
 // React
 import React from "react";
 
@@ -8,36 +5,30 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 // Types
-import { Datum, Rolitas } from "../types/RolitasType";
+import { Datum } from "../types/RolitasType";
 
-// Interface
-interface SongListProps {
-  search: string
-  songs: Rolitas
-  resetSearch: () => void;
-  mySongs: Datum[];
-  setMySongs: React.Dispatch<React.SetStateAction<Datum[]>>;
-}
+// Components
+import SongLink from "../components/SongLink";
+import StarIcon from "../components/StarIcon";
 
 // Helpers
 import { formatSeconds } from "../helpers/helpNumber";
 import { isInFavorites } from "../helpers/helpFavorites";
 
-// Components
-import SongLink from "./SongLink";
-import StarIcon from "./StarIcon";
+// Interface
+interface FavoritesSongProps {
+  mySongs: Datum[];
+}
 
-const SongList: React.FC<SongListProps> = ({ search, songs, resetSearch, mySongs, setMySongs }) => {
+const FavoritesSongs: React.FC<FavoritesSongProps> = ({ mySongs }) => {
+
   const navigate = useNavigate();
 
-  if (!songs) return null;
-
-  const { data, total } = songs;
+  const handleFavorites = (song: Datum, id: number) => isInFavorites(id) ? handleRemoveSong(id) : handleAddSong(song);
 
   const handleAddSong = (song: Datum) => {
     if (!song) return;
     const mySongsList = [...mySongs, song];
-    setMySongs(mySongsList);
     localStorage.setItem("mySongs", JSON.stringify(mySongsList));
     console.log("Añadiendo canción a favoritos: ", song);
   };
@@ -46,29 +37,25 @@ const SongList: React.FC<SongListProps> = ({ search, songs, resetSearch, mySongs
     const songToRemove = mySongs.find((song) => song.id === id);
     if (!songToRemove) return;
     const updatedSongs = mySongs.filter((song) => song.id !== id);
-    setMySongs(updatedSongs);
     localStorage.setItem("mySongs", JSON.stringify(updatedSongs));
     console.log("Eliminando canción de favoritos: ", songToRemove);
   };
 
   const handleSelectSong = (song: Datum) => {
-    // Limpiar la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.delete("q");
-    window.history.replaceState(null, "", window.location.pathname + window.location.hash);
-    navigate(`/details/${song.id}`, { state: { song, search } });
-  };
-
-  const handleFavorites = (song: Datum, id: number) => isInFavorites(id) ? handleRemoveSong(id) : handleAddSong(song);
+      // Limpiar la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.delete("q");
+      window.history.replaceState(null, "", window.location.pathname + window.location.hash);
+      navigate(`/details/${song.id}`);
+    };
 
   return (
     <section className="container songs__list__container">
-      <h2 className="songs__list__title">Resultados de la búsqueda &apos;{search}&apos; - {total} rolitas encontradas UwU</h2>
+      <h2 className="songs__list__title">Favoritos</h2>
       <div className="songs__list__content">
-        <button className="form__button btn__reset" onClick={() => resetSearch()}>Limpiar búsqueda</button>
         <ul className="songs__ul">
           {
-            data.map((song: Datum) => (
+            mySongs.map((song: Datum) => (
               <li
                 key={song.id}
                 className="song__li"
@@ -103,4 +90,4 @@ const SongList: React.FC<SongListProps> = ({ search, songs, resetSearch, mySongs
   );
 };
 
-export default SongList;
+export default FavoritesSongs;

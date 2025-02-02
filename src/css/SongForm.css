@@ -38,7 +38,6 @@
 }
 
 .form__button{
-  flex-grow: 1;
   padding: 0.5rem;
   border: thin solid #ccc;
   border-radius: 0.4rem;
