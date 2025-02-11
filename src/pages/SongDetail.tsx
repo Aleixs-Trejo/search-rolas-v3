@@ -139,7 +139,6 @@ const SongDetail: React.FC = () => {
   const handleBack = () => {
     const searchParam = state?.search || "";
     const baseUrl = `${window.location.origin}/search-rolas-v3`;
-    console.log("baseUrl", baseUrl);
     const newUrl = `${baseUrl}/?q=${encodeURIComponent(searchParam)}`;
     window.location.href = newUrl;
   };

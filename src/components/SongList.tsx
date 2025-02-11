@@ -39,7 +39,6 @@ const SongList: React.FC<SongListProps> = ({ search, songs, resetSearch, mySongs
     const mySongsList = [...mySongs, song];
     setMySongs(mySongsList);
     localStorage.setItem("mySongs", JSON.stringify(mySongsList));
-    console.log("Añadiendo canción a favoritos: ", song);
   };
 
   const handleRemoveSong = (id: number) => {
@@ -48,7 +47,6 @@ const SongList: React.FC<SongListProps> = ({ search, songs, resetSearch, mySongs
     const updatedSongs = mySongs.filter((song) => song.id !== id);
     setMySongs(updatedSongs);
     localStorage.setItem("mySongs", JSON.stringify(updatedSongs));
-    console.log("Eliminando canción de favoritos: ", songToRemove);
   };
 
   const handleSelectSong = (song: Datum) => {

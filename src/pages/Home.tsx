@@ -105,13 +105,11 @@ const SongSearch: React.FC = () => {
   };
 
   const resetSearch = () => {
-    setSearch("");
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.delete("q");
     window.history.replaceState(null, "", window.location.pathname + window.location.hash);
+    setSearch("");
   }
-
-  if (isLoading) return <Loader />;
 
   return (
     <section className="app__container">
@@ -123,6 +121,7 @@ const SongSearch: React.FC = () => {
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
         />
+        {isLoading && <Loader />}
         {search && !isLoading && songs.data.length > 0 && (
           <SongList
             search={search}
@@ -137,7 +136,10 @@ const SongSearch: React.FC = () => {
         )}
         {
           !search && !isLoading && showFavorites && mySongs.length > 0 && (
-            <FavoritesSongs mySongs={mySongs} />
+            <FavoritesSongs
+              mySongs={mySongs}
+              setMySongs={setMySongs}
+            />
           )
         }
       </div>

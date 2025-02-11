@@ -32,8 +32,6 @@ const SongForm: React.FC<SongFormProps> = ({ handleSearch, mySongs, showFavorite
     }
 
     handleSearch(search);
-
-    setSearch("");
   };
 
   return (

@@ -1,5 +1,5 @@
 // React
-import React from "react";
+import React, { useState } from "react";
 
 // React-Router-Dom
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,13 @@ import { useNavigate } from "react-router-dom";
 // Types
 import { Datum } from "../types/RolitasType";
 
+// Hooks
+import { useModal } from "../hooks/useModal";
+
 // Components
 import SongLink from "../components/SongLink";
 import StarIcon from "../components/StarIcon";
+import Modal from "../components/Modal";
 
 // Helpers
 import { formatSeconds } from "../helpers/helpNumber";
@@ -18,27 +22,39 @@ import { isInFavorites } from "../helpers/helpFavorites";
 // Interface
 interface FavoritesSongProps {
   mySongs: Datum[];
+  setMySongs: React.Dispatch<React.SetStateAction<Datum[]>>;
 }
 
-const FavoritesSongs: React.FC<FavoritesSongProps> = ({ mySongs }) => {
+const FavoritesSongs: React.FC<FavoritesSongProps> = ({ mySongs, setMySongs }) => {
+
+  const [modal, openModal, closeModal] = useModal();
+  const [songToDelete, setSongToDelete] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
-  const handleFavorites = (song: Datum, id: number) => isInFavorites(id) ? handleRemoveSong(id) : handleAddSong(song);
+  const handleFavorites = (song: Datum, id: number) => {
+    if (isInFavorites(id)) {
+      setSongToDelete(id);
+      openModal();
+    } else {
+      handleAddSong(song);
+    }
+  }
 
   const handleAddSong = (song: Datum) => {
     if (!song) return;
     const mySongsList = [...mySongs, song];
+    setMySongs(mySongsList);
     localStorage.setItem("mySongs", JSON.stringify(mySongsList));
-    console.log("Añadiendo canción a favoritos: ", song);
   };
 
-  const handleRemoveSong = (id: number) => {
-    const songToRemove = mySongs.find((song) => song.id === id);
-    if (!songToRemove) return;
-    const updatedSongs = mySongs.filter((song) => song.id !== id);
+  const handleRemoveSong = () => {
+    if (!songToDelete) return;
+    const updatedSongs = mySongs.filter((song) => song.id !== songToDelete);
+    setMySongs(updatedSongs);
     localStorage.setItem("mySongs", JSON.stringify(updatedSongs));
-    console.log("Eliminando canción de favoritos: ", songToRemove);
+    closeModal();
+    setSongToDelete(null);
   };
 
   const handleSelectSong = (song: Datum) => {
@@ -86,6 +102,11 @@ const FavoritesSongs: React.FC<FavoritesSongProps> = ({ mySongs }) => {
           }
         </ul>
       </div>
+      <Modal
+        modal={modal}
+        closeModal={closeModal}
+        actionModal={handleRemoveSong}
+      />
     </section>
   );
 };
